@@ -1,0 +1,55 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:key="user_display_name"
+            app:defaultValue="@string/pref_default_display_name"
+            app:persistent="true"
+            app:title="@string/pref_title_display_name"
+            android:inputType="textCapWords"
+            />
+
+        <EditTextPreference
+            app:key="user_email_address"
+            app:defaultValue="@string/pref_default_email_address"
+            app:persistent="true"
+            android:inputType="textEmailAddress"
+            app:title="@string/pref_title_email_address"
+            />
+
+        <!--<ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="reply"
+            app:title="@string/reply_title"
+            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory app:title="@string/sync_header">
+
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/sync_title" />
+
+        <SwitchPreferenceCompat
+            app:dependency="sync"
+            app:key="attachment"
+            app:summaryOff="@string/attachment_summary_off"
+            app:summaryOn="@string/attachment_summary_on"
+            app:title="@string/attachment_title" />
+
+    </PreferenceCategory>-->
+
+    <PreferenceCategory
+        app:title="Contact">
+        <Preference
+            app:key="web"
+            app:title="@string/title_home_web">
+        </Preference>
+    </PreferenceCategory>
+
+</PreferenceScreen>
