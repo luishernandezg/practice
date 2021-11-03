@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_home_to_settingsActivity"
             app:destination="@id/settingsActivity" />
+        <action
+            android:id="@+id/action_navigation_home_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -30,4 +33,9 @@
         android:id="@+id/settingsActivity"
         android:name="com.example.practice.ui.settings.SettingsActivity"
         android:label="SettingsActivity" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.practice.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -65,6 +65,12 @@ class HomeFragment : Fragment() {
              return true
         }
 
+        if (id == R.id.action_profile) {
+            Log.d("Profile","press")
+            findNavController().navigate(R.id.action_navigation_home_to_profileFragment)
+            return true
+        }
+
        return  super.onOptionsItemSelected(item)
 
     }

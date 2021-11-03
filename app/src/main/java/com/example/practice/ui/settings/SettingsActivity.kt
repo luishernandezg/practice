@@ -3,6 +3,7 @@ package com.example.practice.ui.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.practice.R
+import android.text.method.DigitsKeyListener
+
+import android.widget.EditText
+import androidx.preference.EditTextPreference
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -43,7 +49,6 @@ class SettingsActivity : AppCompatActivity() {
 
         return  super.onOptionsItemSelected(item)
 
-
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -61,6 +66,11 @@ class SettingsActivity : AppCompatActivity() {
                         startActivity(intent)
                         true
                     }
+            }
+
+            val userEmailPref = findPreference<EditTextPreference>("user_email_address")
+            userEmailPref?.setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             }
         }
     }

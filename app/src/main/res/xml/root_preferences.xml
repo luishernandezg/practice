@@ -9,6 +9,7 @@
             app:persistent="true"
             app:title="@string/pref_title_display_name"
             android:inputType="textCapWords"
+            app:useSimpleSummaryProvider="true"
             />
 
         <EditTextPreference
@@ -17,15 +18,16 @@
             app:persistent="true"
             android:inputType="textEmailAddress"
             app:title="@string/pref_title_email_address"
+            app:useSimpleSummaryProvider="true"
             />
 
-        <!--<ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />-->
+        <ListPreference
+            app:defaultValue="@string/pref_default_favorite_social"
+            app:entries="@array/pref_entries_favorite_social"
+            app:entryValues="@array/pref_values_favorite_social"
+            app:key="use_favorite_social"
+            app:title="@string/pref_title_favorite_social"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
