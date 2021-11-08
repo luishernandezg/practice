@@ -16,6 +16,7 @@ import com.example.practice.databinding.FragmentHomeBinding
 import com.example.practice.databinding.FragmentProfileBinding
 import com.example.practice.ui.home.HomeViewModel
 import com.google.android.material.textview.MaterialTextView
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +36,7 @@ private var _binding: FragmentProfileBinding? = null
 // onDestroyView.
 private val binding get() = _binding!!
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null

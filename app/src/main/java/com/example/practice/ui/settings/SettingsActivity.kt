@@ -16,8 +16,10 @@ import android.text.method.DigitsKeyListener
 
 import android.widget.EditText
 import androidx.preference.EditTextPreference
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
 
 
