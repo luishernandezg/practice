@@ -11,19 +11,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practice.R
 import com.example.practice.databinding.FragmentHomeBinding
+import com.example.practice.model.PokemonItem
+import com.example.practice.ui.Adapters.PokemonAdapter
+import com.example.practice.ui.Adapters.PokemonAdapterClickListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.math.BigDecimal
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), PokemonAdapterClickListener {
 
 //    private lateinit var homeViewModel: HomeViewModel
     private val homeViewModel by viewModels<HomeViewModel>()
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var adapter: PokemonAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,10 +47,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        /*val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
-        })
+        })*/
         setHasOptionsMenu(true)
         return root
     }
@@ -52,6 +59,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
         homeViewModel.getPokemonList()
+
+        viewManager = LinearLayoutManager(requireContext())
+        binding.rvPokemon.layoutManager = viewManager
+        binding.rvPokemon.adapter = PokemonAdapter(mutableListOf(),this)
     }
 
 
@@ -59,9 +70,18 @@ class HomeFragment : Fragment() {
         homeViewModel.run {
             pokemonList.observe(viewLifecycleOwner) {
                 Timber.d(it.toString())
+                it?.let { list ->
+                    (binding.rvPokemon.adapter as PokemonAdapter).setItems(list.results.mapPokemonItems())
+                }
+
             }
         }
     }
+
+    private fun List<PokemonItem?>?.mapPokemonItems() =
+        this?.mapNotNull {
+            it
+        } ?: listOf()
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -97,5 +117,9 @@ class HomeFragment : Fragment() {
 
        return  super.onOptionsItemSelected(item)
 
+    }
+
+    override fun onItemClick(item: PokemonItem) {
+        Timber.d("ItemClick: $item")
     }
 }
