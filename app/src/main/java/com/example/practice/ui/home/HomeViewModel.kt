@@ -1,6 +1,7 @@
 package com.example.practice.ui.home
 
 import androidx.lifecycle.*
+import androidx.paging.cachedIn
 import com.example.practice.base.BaseViewModel
 import com.example.practice.model.PokemonListResponse
 import com.example.practice.repository.PokemonRepository
@@ -23,6 +24,14 @@ class HomeViewModel @Inject constructor(
     val text: LiveData<String> = _text
 
     val pokemonList = MutableLiveData<PokemonListResponse?>()
+
+
+    val getPokemonPagingListFlow = pokemonRepository.getPokemonPagingList("",20)
+        .cachedIn(viewModelScope)
+
+    fun getPokemonPagingList(){
+
+    }
 
     fun getPokemonList(){
 

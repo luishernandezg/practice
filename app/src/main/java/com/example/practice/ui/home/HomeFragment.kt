@@ -3,14 +3,12 @@ package com.example.practice.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practice.R
@@ -18,10 +16,10 @@ import com.example.practice.databinding.FragmentHomeBinding
 import com.example.practice.model.PokemonItem
 import com.example.practice.ui.Adapters.PokemonAdapter
 import com.example.practice.ui.Adapters.PokemonAdapterClickListener
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.math.BigDecimal
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), PokemonAdapterClickListener {
@@ -57,17 +55,51 @@ class HomeFragment : Fragment(), PokemonAdapterClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObservers()
-        homeViewModel.getPokemonList()
+//        setupObservers()
+//        homeViewModel.getPokemonList()
 
         viewManager = LinearLayoutManager(requireContext())
         binding.rvPokemon.layoutManager = viewManager
-        binding.rvPokemon.adapter = PokemonAdapter(mutableListOf(),this)
+        adapter = PokemonAdapter(PokemonAdapter.PokemonComparator)
+        binding.rvPokemon.adapter = adapter
+
+        setupObservers()
+
+
+        /*val pagingAdapter = UserAdapter(UserComparator)
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.adapter = pagingAdapter*/
+
+// Activities can use lifecycleScope directly, but Fragments should instead use
+// viewLifecycleOwner.lifecycleScope.
+
     }
 
 
     private fun setupObservers() {
-        homeViewModel.run {
+
+        adapter.addLoadStateListener { combinedLoadStates ->
+            when (combinedLoadStates.refresh) {
+                is LoadState.Loading -> {
+                   binding.progressBar.visibility = View.VISIBLE
+                }
+                is LoadState.NotLoading -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is LoadState.Error -> {
+                    Toast.makeText(requireContext(),"Error",Toast.LENGTH_SHORT).show()
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            homeViewModel.getPokemonPagingListFlow.collectLatest { pagingData ->
+                adapter.submitData(pagingData)
+            }
+        }
+
+        /*homeViewModel.run {
             pokemonList.observe(viewLifecycleOwner) {
                 Timber.d(it.toString())
                 it?.let { list ->
@@ -75,7 +107,7 @@ class HomeFragment : Fragment(), PokemonAdapterClickListener {
                 }
 
             }
-        }
+        }*/
     }
 
     private fun List<PokemonItem?>?.mapPokemonItems() =
