@@ -6,6 +6,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -93,8 +95,11 @@ class HomeFragment : Fragment(), PokemonAdapterClickListener {
             }
         }
 
+        // Listen to one flow in a lifecycle-aware manner using flowWithLifecycle
         lifecycleScope.launch {
-            homeViewModel.getPokemonPagingListFlow.collectLatest { pagingData ->
+            homeViewModel.getPokemonPagingListFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collectLatest { pagingData ->
                 adapter.submitData(pagingData)
             }
         }
