@@ -1,6 +1,8 @@
 package com.example.practice.repository
 
 import androidx.paging.PagingData
+import com.example.practice.model.Order
+import com.example.practice.model.OrderResponse
 import com.example.practice.model.PokemonItem
 import com.example.practice.model.PokemonListResponse
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +14,8 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonRepository {
 
     suspend fun getPokemonList(): PokemonListResponse?
+
+    suspend fun getOrdersList(): List<Order?>?
 
     fun getPokemonPagingList(query: String, pageSize: Int): Flow<PagingData<PokemonItem>>
 }

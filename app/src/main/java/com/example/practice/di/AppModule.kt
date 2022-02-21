@@ -5,6 +5,9 @@ import com.example.practice.api.PokemonService
 import com.example.practice.repository.PokemonRepository
 import com.example.practice.repository.PokemonRepositoryImp
 import com.example.practice.util.Constants.Companion.BASE_URL
+import com.example.practice.util.Constants.Companion.BASE_URL_1
+import com.example.practice.util.Constants.Companion.CONSUMER_KEY
+import com.example.practice.util.Constants.Companion.CONSUMER_SECRET
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +22,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer
+import se.akerfeldt.okhttp.signpost.SigningInterceptor
+
 
 /**
  * Created by Luis hernandez on 11/4/2021.
@@ -80,18 +86,23 @@ object AppModule {
         // set your desired log level
         logging.level = HttpLoggingInterceptor.Level.BODY
 
+        val consumer = OkHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
+        consumer.setTokenWithSecret("", "")
+
+
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(
                 Interceptor { chain ->
                     val request = chain.request().newBuilder().build()
                     chain.proceed(request)
                 })
+            .addInterceptor(SigningInterceptor(consumer))
             .readTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
         httpClient.addInterceptor(logging)
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_1)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()

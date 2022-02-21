@@ -4,6 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.practice.api.PokemonService
+import com.example.practice.model.Order
+import com.example.practice.model.OrderResponse
 import com.example.practice.model.PokemonItem
 import com.example.practice.model.PokemonListResponse
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,6 +27,12 @@ class PokemonRepositoryImp(
         return withContext(ioDispatcher) {
 
              pokemonService.getPokemonList(20,0)
+        }
+    }
+    override suspend fun getOrdersList():  List<Order?>? {
+        return withContext(ioDispatcher) {
+
+            pokemonService.getOrders()
         }
     }
 

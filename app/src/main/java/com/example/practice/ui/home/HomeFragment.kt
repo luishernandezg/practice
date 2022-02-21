@@ -104,15 +104,18 @@ class HomeFragment : Fragment(), PokemonAdapterClickListener {
             }
         }
 
-        /*homeViewModel.run {
-            pokemonList.observe(viewLifecycleOwner) {
+        homeViewModel.run {
+            ordersList.observe(viewLifecycleOwner) {
                 Timber.d(it.toString())
                 it?.let { list ->
-                    (binding.rvPokemon.adapter as PokemonAdapter).setItems(list.results.mapPokemonItems())
+                    Timber.d("TAGTAG")
+                    Timber.d(list.toString())
+//                    (binding.rvPokemon.adapter as PokemonAdapter).setItems(list.results.mapPokemonItems())
                 }
 
             }
-        }*/
+        }
+        homeViewModel.getOrdersList()
     }
 
     private fun List<PokemonItem?>?.mapPokemonItems() =
